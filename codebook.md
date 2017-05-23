@@ -30,3 +30,17 @@ fBodyAccJerkMag
 fBodyGyroMag
 fBodyGyroJerkMag
 
+This data is to be tidied, using the following steps :-
+
+# Merge the training and test data into one dataset
+This was done using the fields :-
+features.txt
+activity_labels.txt
+subject_train.txt
+x_train.txt
+y_train.txt
+subject_test.txt
+x_test.txt
+y_test.txt
+
+
