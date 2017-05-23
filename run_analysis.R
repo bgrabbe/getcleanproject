@@ -1,54 +1,85 @@
+# use the 'plyr' package functions
+#
 library(plyr)
 #
-# 1. merge the training and test sets to create one data set
+# Task 1. merge the training and test sets to create one data set
 #
-# get the tables from each of the folders in the dataset
+# download the data files
 #
-# process train and test tables
+if (!file.exists("data.zip")){
+  url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip "
+  download.file(url, "data.zip", method="curl")
+}
 #
-x_trn <- read.table("train/x_trn.txt")
-x_test <- read.table("test/X_test.txt")
-sub_tst <- read.table("test/sub_tst.txt")
-y_trn <- read.table("train/y_trn.txt")
-y_test <- read.table("test/y_test.txt")
-sub_trn <- read.table("train/sub_trn.txt")
+# unzip the file
 #
-# bind the tables together, call them my_x and my_y and my_sub 
+if (!file.exists("UCI HAR Dataset")) { 
+  unzip("data.zip") 
+}
 #
-my_x <- rbind(x_trn, x_test)
-my_y <- rbind(y_trn, y_test)
-my_sub <- rbind(sub_trn, sub_tst)
+# read in the tables (x,y and sub) for both the train and test text files
 #
-# 2. only select the measurements on the mean and standard deviation for each measurement
+x_train <- read.table("UCI HAR Dataset/train/x_train.txt")
+x_test <- read.table("UCI HAR Dataset/test/X_test.txt")
+y_train <- read.table("UCI HAR Dataset/train/y_train.txt")
+y_test <- read.table("UCI HAR Dataset/test/y_test.txt")
+sub_train <- read.table("UCI HAR Dataset/train/sub_train.txt")
+sub_test <- read.table("UCI HAR Dataset/test/sub_test.txt")
 #
-ftrs <- read.table("features.txt")
+# bind the six tables together by their observations
+# calling the now three new bound tables my_x, my_y and my_sub 
 #
-# only columns with 'mean' or 'std' in their names 
-# then subset the columns and tidy the column names
+my_x <- rbind(x_train, x_test)
+my_y <- rbind(y_train, y_test)
+my_sub <- rbind(sub_train, sub_test)
+#
+# Task 2. only select the measurements of the mean and standard deviation for each measurement
+#
+# read in the features text file to table 'ftrs'
+#
+ftrs <- read.table("UCI HAR Dataset/features.txt")
+#
+# select only columns with 'mean' or 'std' in their names 
+# using a regular expression via 'grep'
 #
 my_ftrs <- grep("-(mean|std)\\(\\)", ftrs[, 2])
+#
+# then subset the columns so my_x has only the selected mean and std observations
+#
 my_x <- my_x[, my_ftrs]
+#
+# add the column names from the features text file
+#
 names(my_x) <- ftrs[my_ftrs, 2]
 #
-# 3. change the activity names to be descriptive
+# Task 3. change the activity names to be descriptive
 #
-acts <- read.table("activity_labels.txt")
+# read in the activity_labels text file to table 'acts'
 #
-# update with correct activity names and make them descriptive
+acts <- read.table("UCI HAR Dataset/activity_labels.txt")
+#
+# update with the correct activity names 
 #
 my_y[, 1] <- acts[my_y[, 1], 2]
+#
+# and make them descriptive
+#
 names(my_y) <- "activity"
 #
-# 4. label the data set with descriptive variable names
+# Task 4. label the subject table descriptively
 #
 names(my_sub) <- "subject"
 #
-# bind into a single data set
+# bind into a single data set by their columns
 #
 everything <- cbind(my_x, my_y, my_sub)
 #
-# 5. create the tidied data set (only using column 1:66, as the rest not relevant for this exercise)
-#
+# Task 5. create the tidied data set (averaging the columns)
 #
 tidydata <- ddply(everything, .(subject, activity), function(x) colMeans(x[, 1:66]))
+#
+# output a text file of tidy data
+#
 write.table(tidydata, "tidy_data.txt", row.name=FALSE)
+#
+#
