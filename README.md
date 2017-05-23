@@ -1,7 +1,7 @@
 # getcleanproject
 Getting and Cleaning Data Project
 #
-# Data Set found at https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
+Data Set found at https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
 #
 Create one R script called run_analysis.R that does the following.
 #
