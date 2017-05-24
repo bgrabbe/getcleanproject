@@ -8,7 +8,7 @@ library(plyr)
 #
 if (!file.exists("data.zip")){
   url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip "
-  download.file(url, "data.zip", method="curl")
+  download.file(url, "data.zip", method="curl", mode = "wb")
 }
 #
 # unzip the file
@@ -23,8 +23,8 @@ x_train <- read.table("UCI HAR Dataset/train/x_train.txt")
 x_test <- read.table("UCI HAR Dataset/test/X_test.txt")
 y_train <- read.table("UCI HAR Dataset/train/y_train.txt")
 y_test <- read.table("UCI HAR Dataset/test/y_test.txt")
-sub_train <- read.table("UCI HAR Dataset/train/sub_train.txt")
-sub_test <- read.table("UCI HAR Dataset/test/sub_test.txt")
+sub_train <- read.table("UCI HAR Dataset/train/subject_train.txt")
+sub_test <- read.table("UCI HAR Dataset/test/subject_test.txt")
 #
 # bind the six tables together by their observations
 # calling the now three new bound tables my_x, my_y and my_sub 
