@@ -66,9 +66,15 @@ my_y[, 1] <- acts[my_y[, 1], 2]
 #
 names(my_y) <- "activity"
 #
-# Task 4. label the subject table descriptively
+# Task 4. label the subject and measurements table descriptively
 #
 names(my_sub) <- "subject"
+names(my_x)<-gsub("^t", "time", names(my_x))
+names(my_x)<-gsub("^f", "frequency", names(my_x))
+names(my_x)<-gsub("Acc", "Accelerometer", names(my_x))
+names(my_x)<-gsub("Gyro", "Gyroscope", names(my_x))
+names(my_x)<-gsub("Mag", "Magnitude", names(my_x))
+names(my_x)<-gsub("BodyBody", "Body", names(my_x))
 #
 # bind into a single data set by their columns
 #
